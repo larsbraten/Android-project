@@ -1,23 +1,31 @@
 import "react-native-gesture-handler";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, Svg } from "react-native";
+import HangedMan from "../shared/svg/HangedMan";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 
 function HangMan() {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>test</Text>
+    <View
+      style={{
+        flex: 0.5,
+        alignItems: "center",
+        justifyContent: "center",
+        color: "dodgerblue",
+      }}
+    >
+      <HangedMan />
     </View>
   );
 }
 
 function ChangeLanguage() {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Change Language</Text>
-    </View>
+    <View
+      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+    ></View>
   );
 }
 function Info() {
