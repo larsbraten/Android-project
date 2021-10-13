@@ -1,6 +1,7 @@
 import "react-native-gesture-handler";
 import React from "react";
-import {
+import Header from "./components/Header";
+/* import {
   SafeAreaView,
   StyleSheet,
   Text,
@@ -36,13 +37,9 @@ const DrawerNavigator = () => {
       <Drawer.Screen component={Info} name="Hangman, React Native" />
     </Drawer.Navigator>
   );
-};
+}; */
 export default function App() {
-  return (
-    <NavigationContainer>
-      <DrawerNavigator />
-    </NavigationContainer>
-  );
+  return <Header />;
 }
 /* <View
       style={{
@@ -69,7 +66,7 @@ export default function App() {
       </View>
     </View> */
 
-const styles = StyleSheet.create({
+/*const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -82,4 +79,4 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: "center",
   },
-});
+});*/
