@@ -1,6 +1,6 @@
 import React from "react";
 import { drawRandomWord } from "../shared/strings/Questions";
-import { Text, View, Image, StyleSheet, Button } from "react-native";
+import { Text, View, Image, StyleSheet, Button, Touchable } from "react-native";
 import GameStart from "../assets/GameStart.png";
 import Rope from "../assets/Rope.png";
 import Head from "../assets/Head.png";
@@ -9,6 +9,8 @@ import LeftArm from "../assets/LeftArm.png";
 import RightArm from "../assets/RightArm.png";
 import LeftLeg from "../assets/LeftLeg.png";
 import GameLost from "../assets/GameLost.png";
+import no from "../shared/strings/no";
+import en from "../shared/strings/en";
 
 class HangedMan extends React.Component {
   static defaultProps = {
@@ -49,17 +51,18 @@ class HangedMan extends React.Component {
       .map((letter) => (this.state.guessedLetter.has(letter) ? letter : "_"));
   }
 
-  displayTouchableKeyboard() {
-    return "abcdefghijklmnopqrstuvwxyz".split("").map((letter) => (
-      <Button
-        key={letter}
-        value={letter}
-        onClick={this.handleGuess}
-        disabled={this.state.guessedLetter.has(letter)}
-      >
-        {letter}
-      </Button>
-    ));
+  renderButtons() {
+    return "abcdefghijklmnopqrstuvwxyz"
+      .split("")
+      .map((letter) => (
+        <Button
+          key={letter}
+          value={letter}
+          onClick={this.handleGuess}
+          disabled={this.state.guessedLetter.has(letter)}
+          title={letter}
+        ></Button>
+      ));
   }
   handleGuess(event) {
     let letter = event.target.value;
@@ -72,9 +75,12 @@ class HangedMan extends React.Component {
   render() {
     const gameLost = this.state.countWrong == this.props.noTries;
     const gameWon = this.guessedLetters().join("") === this.state.solution;
-    let gameState = this.displayTouchableKeyboard();
+    let gameState = this.renderButtons();
+
+    /* Replaces the rendered keyboard with victory or defeat messages */
     if (gameWon) gameState = "You won!";
     if (gameLost) gameState = "You lost!";
+
     let restart = gameLost || gameWon;
     return (
       <View style={{ height: "100%", width: "100%" }}>
@@ -92,9 +98,14 @@ class HangedMan extends React.Component {
           </Text>
           <Text>Guess the city!</Text>
           <Text>{!gameLost ? this.guessedLetters() : this.state.solution}</Text>
+          <Text>{gameState}</Text>
           {restart && (
-            <Button id="reset" onClick={this.reset}>
-              Restart?
+            <Button
+              id="restart"
+              onClick={this.resetGameState()}
+              title="Restart"
+            >
+              Restart
             </Button>
           )}
         </View>
@@ -111,7 +122,8 @@ const styles = StyleSheet.create({
   },
 });
 export default HangedMan;
-/* The SVG file created here looks really good, but I couldn't figure out how to edit it based on the state of the game
+
+/* The SVG file created here looks really good, but I couldn't figure out how to edit it based on the state of the game. Instead, I just made PNG files for the different game states.
 /*
 let HangedMan = () => {
   return (
