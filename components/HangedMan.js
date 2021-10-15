@@ -1,21 +1,23 @@
 import React from "react";
 import { drawRandomWord } from "../shared/strings/Questions";
-import { Text, View, Image, StyleSheet, Button, Touchable } from "react-native";
-import GameStart from "../assets/GameStart.png";
-import Rope from "../assets/Rope.png";
-import Head from "../assets/Head.png";
-import Body from "../assets/Body.png";
-import LeftArm from "../assets/LeftArm.png";
-import RightArm from "../assets/RightArm.png";
-import LeftLeg from "../assets/LeftLeg.png";
-import GameLost from "../assets/GameLost.png";
-import no from "../shared/strings/no";
-import en from "../shared/strings/en";
+import { getAlphabet } from "../shared/strings/alphabet";
+import { Text, View, Image, StyleSheet, Button } from "react-native";
+import GameStart from "../assets/gamestates/GameStart.png";
+import Rope from "../assets/gamestates/Rope.png";
+import Head from "../assets/gamestates/Head.png";
+import Body from "../assets/gamestates/Body.png";
+import LeftArm from "../assets/gamestates/LeftArm.png";
+import RightArm from "../assets/gamestates/RightArm.png";
+import LeftLeg from "../assets/gamestates/LeftLeg.png";
+import GameLost from "../assets/gamestates/GameLost.png";
+import i18n from "i18n-js";
 
 class HangedMan extends React.Component {
+  /* Props are immutable */
   static defaultProps = {
     noTries: 7,
-    gameStates: [
+
+    gameStatePictures: [
       GameStart,
       Rope,
       Head,
@@ -41,7 +43,7 @@ class HangedMan extends React.Component {
   resetGameState() {
     this.setState({
       countWrong: 0,
-      guessedLetter: new set(),
+      guessedLetter: new Set(),
       solution: drawRandomWord(),
     });
   }
@@ -52,60 +54,63 @@ class HangedMan extends React.Component {
   }
 
   renderButtons() {
-    return "abcdefghijklmnopqrstuvwxyz"
+    return getAlphabet()
       .split("")
       .map((letter) => (
         <Button
           key={letter}
           value={letter}
-          onClick={this.handleGuess}
+          onPress={this.handleGuess}
           disabled={this.state.guessedLetter.has(letter)}
           title={letter}
         ></Button>
       ));
   }
-  handleGuess(event) {
+  handleGuess = (event) => {
+    console.log(event.target.value);
     let letter = event.target.value;
-    this.setState((state) => ({
-      guessedLetter: state.guessedLetter.add(letter),
-      countWrong: state.countWrong + (state.solution.includes(letter) ? 0 : 1),
-    }));
-  }
+    this.setState({
+      ...this.state,
+      guessedLetter: this.state.guessedLetter.add(letter),
+      countWrong:
+        this.state.countWrong + (this.state.solution.includes(letter) ? 0 : 1),
+    });
+  };
 
   render() {
     const gameLost = this.state.countWrong == this.props.noTries;
     const gameWon = this.guessedLetters().join("") === this.state.solution;
     let gameState = this.renderButtons();
-
-    /* Replaces the rendered keyboard with victory or defeat messages */
-    if (gameWon) gameState = "You won!";
-    if (gameLost) gameState = "You lost!";
-
     let restart = gameLost || gameWon;
     return (
       <View style={{ height: "100%", width: "100%" }}>
         <View style={{ height: "35%", width: "100%" }}>
           <Image
             style={styles.images}
-            source={this.props.gameStates[this.state.countWrong]}
-            alt={this.props.gameStates.gameLost}
+            source={this.props.gameStatePictures[this.state.countWrong]}
+            alt={this.props.gameStatePictures.gameLost}
           />
         </View>
         <View style={{ height: "65%", width: "100%" }}>
           <Text>
-            Guesses Left: {this.props.noTries - this.state.countWrong} /{" "}
-            {this.props.noTries}
+            {i18n.t("guessesLeft")} {this.props.noTries - this.state.countWrong}{" "}
+            / {this.props.noTries}
           </Text>
-          <Text>Guess the city!</Text>
+          <Text>{i18n.t("guessTheCity")}</Text>
           <Text>{!gameLost ? this.guessedLetters() : this.state.solution}</Text>
-          <Text>{gameState}</Text>
+          <View>
+            <Text>{gameState}</Text>
+          </View>
+
           {restart && (
             <Button
               id="restart"
               onClick={this.resetGameState()}
               title="Restart"
+              height="100"
+              width="100"
             >
-              Restart
+              {i18n.t("restart")}
             </Button>
           )}
         </View>
