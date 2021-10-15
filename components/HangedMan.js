@@ -78,6 +78,7 @@ class HangedMan extends React.Component {
   };
 
   render() {
+    console.log(this.state.solution);
     const gameLost = this.state.countWrong == this.props.noTries;
     const gameWon = this.guessedLetters().join("") === this.state.solution;
     let gameState = this.renderButtons();

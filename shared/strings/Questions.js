@@ -1,8 +1,31 @@
 import i18n from "i18n-js";
 import * as Localization from "expo-localization";
 i18n.locale = Localization.locale;
-let Capital = [];
 
+/* Will default to this list if the language is not en-GB or nb-NO */
+let Capital = [
+  "Oslo",
+  "London",
+  "Paris",
+  "Amsterdam",
+  "Stockholm",
+  "Ankara",
+  "Dubai",
+  "Minsk",
+  "Brussels",
+  "Sofia",
+  "Tallinn",
+  "Dublin",
+  "Kabul",
+  "Tirane",
+  "Luanda",
+  "Algiers",
+  "Yerevan",
+  "Nassau",
+  "Dhaka",
+  "Ouagadougou",
+];
+/* Will default to this list if the language is en-GB */
 if (i18n.locale == "en-GB") {
   Capital = [
     "Oslo",
@@ -27,6 +50,7 @@ if (i18n.locale == "en-GB") {
     "Ouagadougou",
   ];
 }
+/* Will default to this list if the language is nb-NO */
 if (i18n.locale == "nb-NO") {
   Capital = [
     "Oslo",
