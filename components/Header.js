@@ -17,7 +17,7 @@ function HangMan() {
 function ChangeLanguage() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Button title={i18n.t("changeLanguage")} color="#841584" />
+      <Text>{i18n.t("changeLanguageInfo")}</Text>
     </View>
   );
 }
@@ -33,7 +33,7 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen component={HangMan} name={i18n.t("HangMan")} />
+      <Drawer.Screen component={HangMan} name={i18n.t("hangMan")} />
       <Drawer.Screen
         component={ChangeLanguage}
         name={i18n.t("changeLanguage")}

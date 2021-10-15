@@ -1,6 +1,6 @@
 import React from "react";
 import { drawRandomWord } from "../shared/strings/Questions";
-import { getAlphabet } from "../shared/strings/alphabet";
+import { getAlphabet } from "../shared/strings/Alphabet";
 import { Text, View, Image, StyleSheet, Button } from "react-native";
 import GameStart from "../assets/gamestates/GameStart.png";
 import Rope from "../assets/gamestates/Rope.png";
@@ -128,7 +128,8 @@ const styles = StyleSheet.create({
 });
 export default HangedMan;
 
-/* The SVG file created here looks really good, but I couldn't figure out how to edit it based on the state of the game. Instead, I just made PNG files for the different game states.
+/* The SVG file I created here looks really good, but I couldn't figure out how to edit it based on the state of the game.
+Instead, I just made PNG files for the different game states.
 /*
 let HangedMan = () => {
   return (

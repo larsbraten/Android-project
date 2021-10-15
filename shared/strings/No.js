@@ -1,7 +1,9 @@
 export default {
-  HangMan: "Hung Man",
+  hangMan: "Hung Man",
   appInfo: "Informasjon om appen",
   changeLanguage: "Bytt språk",
+  changeLanguageInfo:
+    "Denne appen følger systemspråket ditt.\nDen støtter både Engelsk(Great Britain) og Norsk(Bokmål)",
   info: "En Hangman app laget i React Native og Expo i fobindelse med faget Android apputvikling på NTNU.",
   gameInfo:
     "Trykk på bokstavene på skjermen for å gjette en bokstav. Om den er feil blir en del av figuren lagt til. Svarer du feil for mange ganger,vil karakteren bli hengt og du taper spillet.",
