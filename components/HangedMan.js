@@ -36,7 +36,6 @@ class HangedMan extends React.Component {
       guessedLetter: new Set(),
       solution: drawRandomWord(),
     };
-    this.handleGuess = this.handleGuess.bind(this);
     this.resetGameState = this.resetGameState.bind(this);
   }
 
@@ -48,9 +47,13 @@ class HangedMan extends React.Component {
     });
   }
   guessedLetters() {
-    return this.state.solution
-      .split("")
-      .map((letter) => (this.state.guessedLetter.has(letter) ? letter : "_"));
+    return (
+      this.state.solution
+        .toUpperCase()
+        .split("")
+        //Letter if true, underscore if false
+        .map((letter) => (this.state.guessedLetter.has(letter) ? letter : "_"))
+    );
   }
 
   renderButtons() {
@@ -60,15 +63,15 @@ class HangedMan extends React.Component {
         <Button
           key={letter}
           value={letter}
-          onPress={this.handleGuess}
+          onPress={() => this.handleGuess(letter)}
           disabled={this.state.guessedLetter.has(letter)}
           title={letter}
         ></Button>
       ));
   }
-  handleGuess = (event) => {
-    console.log(event.target.value);
-    let letter = event.target.value;
+  handleGuess = (value) => {
+    console.log(value);
+    let letter = value;
     this.setState({
       ...this.state,
       guessedLetter: this.state.guessedLetter.add(letter),
@@ -78,30 +81,28 @@ class HangedMan extends React.Component {
   };
 
   render() {
-    console.log(this.state.solution);
     const gameLost = this.state.countWrong == this.props.noTries;
     const gameWon = this.guessedLetters().join("") === this.state.solution;
     let gameState = this.renderButtons();
     let restart = gameLost || gameWon;
     return (
-      <View style={{ height: "100%", width: "100%" }}>
-        <View style={{ height: "35%", width: "100%" }}>
+      <View style={styles.viewtopLevel}>
+        <View style={styles.viewSecondTopLevel}>
           <Image
             style={styles.images}
             source={this.props.gameStatePictures[this.state.countWrong]}
             alt={this.props.gameStatePictures.gameLost}
           />
         </View>
-        <View style={{ height: "65%", width: "100%" }}>
+        <View style={styles.viewThirdTopLevel}>
           <Text>
             {i18n.t("guessesLeft")} {this.props.noTries - this.state.countWrong}{" "}
             / {this.props.noTries}
           </Text>
           <Text>{i18n.t("guessTheCity")}</Text>
           <Text>{!gameLost ? this.guessedLetters() : this.state.solution}</Text>
-          <View>
-            <Text>{gameState}</Text>
-          </View>
+
+          <Text>{gameState}</Text>
 
           {restart && (
             <Button
@@ -125,6 +126,18 @@ const styles = StyleSheet.create({
     height: undefined,
     width: undefined,
     ...StyleSheet.absoluteFillObject,
+  },
+  viewtopLevel: {
+    height: "100%",
+    width: "100%",
+  },
+  viewSecondTopLevel: {
+    height: "35%",
+    width: "100%",
+  },
+  viewThirdTopLevel: {
+    height: "65%",
+    width: "100%",
   },
 });
 export default HangedMan;
