@@ -1,10 +1,11 @@
 import "react-native-gesture-handler";
 import React from "react";
-import { Text, View, Button } from "react-native";
+import { Text, View, Image } from "react-native";
 import HangedMan from "./HangedMan";
 import i18n from "i18n-js";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
+import Languages from "../assets/languages.png";
 
 function HangMan() {
   return (
@@ -17,6 +18,10 @@ function HangMan() {
 function ChangeLanguage() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Image
+        style={{ height: "50%", width: "100%", marginBottom: 20, marginTop: 0 }}
+        source={Languages}
+      ></Image>
       <Text>{i18n.t("changeLanguageInfo")}</Text>
     </View>
   );

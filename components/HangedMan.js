@@ -1,7 +1,14 @@
 import React from "react";
 import { drawRandomWord } from "../shared/strings/Questions";
 import { getAlphabet } from "../shared/strings/Alphabet";
-import { Text, View, Image, StyleSheet, Button } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import GameStart from "../assets/gamestates/GameStart.png";
 import Rope from "../assets/gamestates/Rope.png";
 import Head from "../assets/gamestates/Head.png";
@@ -16,7 +23,6 @@ class HangedMan extends React.Component {
   /* Props are immutable */
   static defaultProps = {
     noTries: 7,
-
     gameStatePictures: [
       GameStart,
       Rope,
@@ -47,44 +53,78 @@ class HangedMan extends React.Component {
     });
   }
   guessedLetters() {
+    console.log(this.state.solution);
     return (
       this.state.solution
-        .toUpperCase()
         .split("")
         //Letter if true, underscore if false
         .map((letter) => (this.state.guessedLetter.has(letter) ? letter : "_"))
     );
   }
 
-  renderButtons() {
+  EndGameMessage = () => {
+    const gameWon = this.state.countWrong < 7;
+    if (gameWon) {
+      return <Text style={{ fontSize: 20 }}>{i18n.t("gameWon")}</Text>;
+    }
+    return <Text style={{ fontSize: 20 }}>{i18n.t("gameLost")}</Text>;
+  };
+
+  RenderButtons = () => {
     return getAlphabet()
       .split("")
       .map((letter) => (
         <Button
+          containerStyle={{
+            padding: 7,
+            height: 30,
+            overflow: "hidden",
+            borderRadius: 4,
+            margin: 2,
+            backgroundColor: "white",
+          }}
           key={letter}
           value={letter}
-          onPress={() => this.handleGuess(letter)}
+          onPress={() => this.HandleGuess(letter)}
           disabled={this.state.guessedLetter.has(letter)}
           title={letter}
         ></Button>
       ));
-  }
-  handleGuess = (value) => {
-    console.log(value);
-    let letter = value;
+  };
+  HandleGuess = (value) => {
     this.setState({
       ...this.state,
-      guessedLetter: this.state.guessedLetter.add(letter),
+      guessedLetter: this.state.guessedLetter.add(value),
       countWrong:
-        this.state.countWrong + (this.state.solution.includes(letter) ? 0 : 1),
+        this.state.countWrong + (this.state.solution.includes(value) ? 0 : 1),
     });
   };
 
   render() {
     const gameLost = this.state.countWrong == this.props.noTries;
-    const gameWon = this.guessedLetters().join("") === this.state.solution;
-    let gameState = this.renderButtons();
-    let restart = gameLost || gameWon;
+    const gameWon = this.guessedLetters().join("") == this.state.solution;
+    let restartPrompt = gameLost || gameWon;
+    let RenderButtons = this.RenderButtons();
+    let EndGameMessage = this.EndGameMessage();
+    if (restartPrompt) {
+      RenderButtons = (
+        <>
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            {EndGameMessage}
+            <Button
+              id="restart"
+              onPress={this.resetGameState}
+              title={i18n.t("restart")}
+              height="100"
+              width="100"
+            ></Button>
+          </View>
+        </>
+      );
+    }
+
     return (
       <View style={styles.viewtopLevel}>
         <View style={styles.viewSecondTopLevel}>
@@ -99,22 +139,14 @@ class HangedMan extends React.Component {
             {i18n.t("guessesLeft")} {this.props.noTries - this.state.countWrong}{" "}
             / {this.props.noTries}
           </Text>
-          <Text>{i18n.t("guessTheCity")}</Text>
-          <Text>{!gameLost ? this.guessedLetters() : this.state.solution}</Text>
+          <Text style={{ fontSize: 20 }}>{i18n.t("guessTheCity")}</Text>
+          <Text style={{ fontSize: 30 }}>
+            {!gameLost ? this.guessedLetters() : this.state.solution}
+          </Text>
 
-          <Text>{gameState}</Text>
-
-          {restart && (
-            <Button
-              id="restart"
-              onClick={this.resetGameState()}
-              title="Restart"
-              height="100"
-              width="100"
-            >
-              {i18n.t("restart")}
-            </Button>
-          )}
+          <View style={styles.container}>
+            <View style={styles.keyboard}>{RenderButtons}</View>
+          </View>
         </View>
       </View>
     );
@@ -130,14 +162,37 @@ const styles = StyleSheet.create({
   viewtopLevel: {
     height: "100%",
     width: "100%",
+    backgroundColor: "white",
   },
   viewSecondTopLevel: {
     height: "35%",
     width: "100%",
+    backgroundColor: "white",
   },
+
   viewThirdTopLevel: {
-    height: "65%",
-    width: "100%",
+    justifyContent: "center", //Centered horizontally
+    alignItems: "center", //Centered vertically
+    flex: 1,
+    textAlignVertical: "center",
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  container: {
+    alignItems: "center",
+    backgroundColor: "white",
+    flex: 1,
+    flexDirection: "row",
+    color: "black",
+  },
+  keyboard: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    marginLeft: 5,
+    marginRight: 5,
+    color: "black",
+    backgroundColor: "white",
   },
 });
 export default HangedMan;
