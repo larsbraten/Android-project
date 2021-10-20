@@ -6,7 +6,7 @@ import i18n from "i18n-js";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import Languages from "../assets/languages.png";
-import { Linking, Button } from "react-native";
+import { Button } from "react-native";
 import * as IntentLauncher from "expo-intent-launcher";
 
 function HangMan() {
