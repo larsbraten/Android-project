@@ -6,6 +6,8 @@ import i18n from "i18n-js";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import Languages from "../assets/languages.png";
+import { Linking, Button } from "react-native";
+import * as IntentLauncher from "expo-intent-launcher";
 
 function HangMan() {
   return (
@@ -15,21 +17,38 @@ function HangMan() {
   );
 }
 
-function ChangeLanguage() {
+ChangeLanguage = () => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Image
         style={{ height: "50%", width: "100%", marginBottom: 20, marginTop: 0 }}
         source={Languages}
       ></Image>
-      <Text>{i18n.t("changeLanguageInfo")}</Text>
+      <View style={{ flex: 0.5 }}>
+        <Text>{i18n.t("changeLanguageInfo")}</Text>
+        <Button
+          onPress={() => {
+            {
+              /* 
+              Starts the Locale_settings activity and resolves the promise when the user returns to the app.
+              Obviously only works for Android 
+              */
+            }
+            IntentLauncher.startActivityAsync(
+              IntentLauncher.ACTION_LOCALE_SETTINGS
+            );
+          }}
+          title={i18n.t("changeLanguage")}
+        ></Button>
+      </View>
     </View>
   );
-}
+};
 function Info() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>{i18n.t("info")}</Text>
+      <Text>{i18n.t("gameInfo")}</Text>
     </View>
   );
 }
@@ -47,6 +66,7 @@ const DrawerNavigator = () => {
     </Drawer.Navigator>
   );
 };
+
 export default function Header() {
   return (
     <NavigationContainer>
