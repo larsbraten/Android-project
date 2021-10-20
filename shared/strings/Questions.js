@@ -3,7 +3,7 @@ import * as Localization from "expo-localization";
 i18n.locale = Localization.locale;
 
 /* Will default to this list if the language is not en-GB or nb-NO */
-let Capital = [
+let City = [
   "OSLO",
   "LONDON",
   "PARIS",
@@ -28,7 +28,7 @@ let Capital = [
 ];
 /* Will default to this list if the language is en-GB */
 if (i18n.locale == "en-GB") {
-  Capital = [
+  City = [
     "OSLO",
     "LONDON",
     "PARIS",
@@ -53,7 +53,7 @@ if (i18n.locale == "en-GB") {
 }
 /* Will default to this list if the language is nb-NO */
 if (i18n.locale == "nb-NO") {
-  Capital = [
+  City = [
     "OSLO",
     "KONGSVINGER",
     "TRONDHEIM",
@@ -77,8 +77,7 @@ if (i18n.locale == "nb-NO") {
   ];
 }
 
-function drawRandomWord() {
-  return Capital[Math.floor(Math.random() * Capital.length)];
-}
-
-export { drawRandomWord };
+/* Draws a random word from the Array of words */
+export let word = () => {
+  return City[Math.floor(Math.random() * City.length)];
+};

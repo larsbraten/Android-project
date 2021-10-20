@@ -14,8 +14,6 @@ if (i18n.locale == "nb-NO") {
   Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
 }
 
-function getAlphabet() {
+export let getAlphabet = () => {
   return Alphabet;
-}
-
-export { getAlphabet };
+};

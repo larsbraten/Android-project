@@ -1,21 +1,13 @@
 import "react-native-gesture-handler";
 import React from "react";
 import { Text, View, Image } from "react-native";
-import HangedMan from "./HangedMan";
+import HangManGame from "./HangManGame";
 import i18n from "i18n-js";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import Languages from "../assets/languages.png";
 import { Button } from "react-native";
 import * as IntentLauncher from "expo-intent-launcher";
-
-function HangMan() {
-  return (
-    <View>
-      <HangedMan></HangedMan>
-    </View>
-  );
-}
 
 ChangeLanguage = () => {
   return (
@@ -47,8 +39,11 @@ ChangeLanguage = () => {
 function Info() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>{i18n.t("info")}</Text>
-      <Text>{i18n.t("gameInfo")}</Text>
+      <Text>
+        {i18n.t("info")}
+        {"\n"}
+        {i18n.t("gameInfo")}
+      </Text>
     </View>
   );
 }
@@ -57,7 +52,7 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen component={HangMan} name={i18n.t("hangMan")} />
+      <Drawer.Screen component={HangManGame} name={i18n.t("hangMan")} />
       <Drawer.Screen
         component={ChangeLanguage}
         name={i18n.t("changeLanguage")}
