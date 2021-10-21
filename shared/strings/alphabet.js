@@ -1,19 +1,15 @@
-import i18n from "i18n-js";
-import * as Localization from "expo-localization";
+import i18n from 'i18n-js';
+import * as Localization from 'expo-localization';
 i18n.locale = Localization.locale;
+let norwegian = i18n.locale == 'nb-NO';
+let english = i18n.locale == 'en-GB';
 
-/* Will default to this string if the language is not en-GB or nb-NO */
-let Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+/* Will default to this string if the language is en-GB or something or neither en-GB or nb-NO */
+englishAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-/* Will default to this string if the language is en-GB */
-if (i18n.locale == "en-GB") {
-  Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-}
 /* Will default to this string if the language is nb-NO */
-if (i18n.locale == "nb-NO") {
-  Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
-}
+norwegianAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ';
 
 export let getAlphabet = () => {
-  return Alphabet;
+	return norwegian ? norwegianAlphabet : english ? englishAlphabet : englishAlphabet;
 };

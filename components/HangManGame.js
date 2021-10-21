@@ -94,7 +94,7 @@ class HangManGame extends React.Component {
 		this.setState({
 			...this.state,
 			guesses: this.state.guesses.add(guess),
-			countWrong: this.state.countWrong + (this.state.solution.includes(guess) ? 0 : 1),
+			countWrong: (this.state.solution.includes(guess) ? 0 : 1) + this.state.countWrong,
 		});
 	};
 
