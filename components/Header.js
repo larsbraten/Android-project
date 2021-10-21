@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, StyleSheet } from "react-native";
 import HangManGame from "./HangManGame";
 import i18n from "i18n-js";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -38,7 +38,7 @@ ChangeLanguage = () => {
 };
 function Info() {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View style={styles.info}>
       <Text>
         {i18n.t("info")}
         {"\n"}
@@ -61,7 +61,13 @@ const DrawerNavigator = () => {
     </Drawer.Navigator>
   );
 };
-
+const styles = StyleSheet.create({
+  info: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 export default function Header() {
   return (
     <NavigationContainer>
