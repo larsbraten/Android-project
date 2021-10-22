@@ -13,12 +13,12 @@ import RightArm from '../assets/gamePictures/RightArm.png';
 import LeftLeg from '../assets/gamePictures/LeftLeg.png';
 import GameLost from '../assets/gamePictures/GameLost.png';
 
-class HangManGame extends React.Component {
+export default class HangManGame extends React.Component {
 	/* Props are immutable */
 	static defaultProps = {
 		gamePictures: [GameStart, Rope, Head, Body, LeftArm, RightArm, LeftLeg, GameLost],
 		/* Number of gamePictures minus 1 */
-		noTries: 7,
+		strikes: 7,
 	};
 
 	constructor(props) {
@@ -38,9 +38,9 @@ class HangManGame extends React.Component {
 	/* Draws a new word, and resets the number of failed attempts. Effectively restarting the game. */
 	startNewGame() {
 		this.setState({
+			solution: word(),
 			countWrong: 0,
 			guesses: new Set(),
-			solution: word(),
 		});
 	}
 	/* Used for displaying correct guesses */
@@ -84,6 +84,7 @@ class HangManGame extends React.Component {
 							value={guess}
 							title={guess}
 							disabled={this.state.guesses.has(guess)}
+							key={guess}
 						></Button>
 					</TouchableHighlight>
 				))
@@ -91,7 +92,7 @@ class HangManGame extends React.Component {
 	};
 
 	guessesLeft = () => {
-		return this.props.noTries - this.state.countWrong;
+		return this.props.strikes - this.state.countWrong;
 	};
 	showSolution = () => {
 		return this.state.solution;
@@ -107,12 +108,12 @@ class HangManGame extends React.Component {
 	};
 
 	render() {
-		const gameLost = this.state.countWrong == this.props.noTries;
+		const gameLost = this.state.countWrong == this.props.strikes;
 		const gameWon = this.state.solution == this.showProgress().join('');
-		const restartPrompt = gameLost || gameWon;
+		const buttonDisplayer = gameLost || gameWon;
 		const endGameMessage = this.endGameMessage();
 		let buttons = null;
-		!restartPrompt
+		!buttonDisplayer
 			? (buttons = this.buttons())
 			: (buttons = (
 					<>
@@ -217,8 +218,6 @@ const styles = StyleSheet.create({
 		marginRight: 5,
 	},
 });
-export default HangManGame;
-
 /* The SVG file I created here looks really good, but I couldn't figure out how to edit it based on the state of the game.
 Instead, I just made PNG files for the different game states.
 /*
