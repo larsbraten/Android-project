@@ -6,10 +6,10 @@ let norwegian = i18n.locale == 'nb-NO';
 let english = i18n.locale == 'en-GB';
 export default class Alphabet extends React.Component {}
 /* Will default to this string if the language is en-GB or something or neither en-GB or nb-NO */
-englishAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+englishAlphabet = 'QWERTYUIOPASDFGHJKLZXCVBNM';
 
 /* Will default to this string if the language is nb-NO */
-norwegianAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ';
+norwegianAlphabet = 'QWERTYUIOPÅASDFGHJKLØÆZXCVBNM';
 
 export let getAlphabet = () => {
 	return norwegian ? norwegianAlphabet : english ? englishAlphabet : englishAlphabet;
