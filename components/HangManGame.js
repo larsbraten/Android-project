@@ -13,57 +13,29 @@ import RightArm from '../assets/gamePictures/RightArm.png';
 import LeftLeg from '../assets/gamePictures/LeftLeg.png';
 import GameLost from '../assets/gamePictures/GameLost.png';
 
-export default class HangManGame extends React.Component {
+const HangManGame = () => {
 	/* Props are immutable */
-	static defaultProps = {
+	defaultProps = {
 		gamePictures: [GameStart, Rope, Head, Body, LeftArm, RightArm, LeftLeg, GameLost],
 		/* Number of gamePictures minus 1 */
 		strikes: 7,
 	};
 
-	constructor(props) {
-		/* Can’t use "this" */
-		super(props);
-		/* Can use "this" after calling super */
-		this.state = {
-			/* Number of times the user has guessed the wrong number */
-			countWrong: 0,
-			/* Set of guessed letters */
-			guesses: new Set(),
-			/* Hangman solution */
-			solution: word(),
-		};
-	}
+	/* Number of times the user has guessed the wrong number */
+	const [countWrong, setCountWrong] = useState(0);
+	/* Set of guessed letters */
+	const [guesses, setGuesses] = useState(new Set());
+	/* Hangman solution */
+	const [solution, setSolution] = useState(word());
 
 	/* Draws a new word, and resets the number of failed attempts. Effectively restarting the game. */
-	startNewGame() {
-		this.setState({
-			solution: word(),
-			countWrong: 0,
-			guesses: new Set(),
-		});
-	}
-	/* Used for displaying correct guesses */
-	showProgress = () => {
-		console.log(this.state.solution);
-		return (
-			this.state.solution
-				/* Splits the string letter by letter */
-				.split('')
-				/* guessed letter if true, dash if false */
-				.map((letter) => (this.state.guesses.has(letter) ? letter : '-'))
-		);
+	const startNewGame = () => {
+		setSolution(word());
+		setCountWrong(0);
+		setGuesses(new Set());
 	};
 
-	endGameMessage = () => {
-		return this.state.countWrong < 7 ? (
-			<Text style={{ fontSize: 20 }}>{i18n.t('gameWon')}</Text>
-		) : (
-			<Text style={{ fontSize: 20 }}>{i18n.t('gameLost')}</Text>
-		);
-	};
-
-	buttons = () => {
+	const buttons = () => {
 		return (
 			getAlphabet()
 				/* Splits the string letter by letter */
@@ -80,10 +52,10 @@ export default class HangManGame extends React.Component {
 						key={guess}
 					>
 						<Button
-							onPress={() => this.compareGuessToSolution(guess)}
+							onPress={() => compareGuessToSolution(guess)}
 							value={guess}
 							title={guess}
-							disabled={this.state.guesses.has(guess)}
+							disabled={guesses.has(guess)}
 							key={guess}
 						></Button>
 					</TouchableHighlight>
@@ -91,89 +63,108 @@ export default class HangManGame extends React.Component {
 		);
 	};
 
-	guessesLeft = () => {
-		return this.props.strikes - this.state.countWrong;
+	const guessesLeft = () => {
+		return defaultProps.strikes - countWrong;
 	};
-	showSolution = () => {
-		return this.state.solution;
+	const showSolution = () => {
+		return solution;
+	};
+	const checkGameLost = () => {
+		return countWrong == defaultProps.strikes;
+	};
+	const checkGameWon = () => {
+		return solution == showProgress().join('');
+	};
+	const endGameMessage = () => {
+		return checkGameWon() ? (
+			<Text style={{ fontSize: 20 }}>{i18n.t('gameWon')}</Text>
+		) : (
+			<Text style={{ fontSize: 20 }}>{i18n.t('gameLost')}</Text>
+		);
+	};
+	/* Used for displaying correct guesses */
+	const showProgress = () => {
+		console.log(solution);
+		return (
+			solution
+				/* Splits the string letter by letter */
+				.split('')
+				/* guessed letter if true, dash if false */
+				.map((letter) => (guesses.has(letter) ? letter : '-'))
+		);
 	};
 
 	/* Compares the guess to the solution, and adds an attempt if it is wrong. Also stores the guess in the guesses set */
-	compareGuessToSolution = (guess) => {
-		this.setState({
-			...this.state,
-			guesses: this.state.guesses.add(guess),
-			countWrong: (this.state.solution.includes(guess) ? 0 : 1) + this.state.countWrong,
-		});
+	const compareGuessToSolution = (guess) => {
+		let tempGuesses = guesses;
+		tempGuesses.add(guess);
+		setGuesses(new Set(tempGuesses));
+		if (!solution.includes(guess)) {
+			setCountWrong(countWrong + 1);
+		}
+	};
+	const renderGameButtons = () => {
+		return !(checkGameLost() || checkGameWon()) ? (
+			buttons()
+		) : (
+			<>
+				<View
+					style={{
+						flex: 1,
+						alignItems: 'center',
+						justifyContent: 'center',
+					}}
+				>
+					{endGameMessage()}
+					<TouchableHighlight>
+						<Button
+							onPress={() => startNewGame()}
+							title={i18n.t('restart')}
+							height="100"
+							width="100"
+							buttonStyle={styles.button}
+						></Button>
+					</TouchableHighlight>
+				</View>
+			</>
+		);
 	};
 
-	render() {
-		const gameLost = this.state.countWrong == this.props.strikes;
-		const gameWon = this.state.solution == this.showProgress().join('');
-		const buttonDisplayer = gameLost || gameWon;
-		const endGameMessage = this.endGameMessage();
-		let buttons = null;
-		!buttonDisplayer
-			? (buttons = this.buttons())
-			: (buttons = (
-					<>
-						<View
-							style={{
-								flex: 1,
-								alignItems: 'center',
-								justifyContent: 'center',
-							}}
-						>
-							{endGameMessage}
-							<TouchableHighlight>
-								<Button
-									onPress={() => this.startNewGame()}
-									title={i18n.t('restart')}
-									height="100"
-									width="100"
-									buttonStyle={styles.button}
-								></Button>
-							</TouchableHighlight>
-						</View>
-					</>
-			  ));
-
-		return (
-			<View style={styles.viewtopLevel}>
-				<View style={styles.fitImage}>
-					{/* gamePictures. Uses the number of failed guesses as the index. */}
-					<FitImage
-						style={styles.fitImage}
-						source={this.props.gamePictures[this.state.countWrong]}
-						alt={this.props.gamePictures.gameLost}
-					/>
+	return (
+		<View style={styles.viewtopLevel}>
+			<View style={styles.fitImage}>
+				{/* gamePictures. Uses the number of failed guesses as the index. */}
+				<FitImage
+					style={styles.fitImage}
+					source={defaultProps.gamePictures[countWrong]}
+					alt={defaultProps.gamePictures.gameLost}
+				/>
+			</View>
+			<View style={styles.textContainer}>
+				<Text style={{ marginBottom: 10, fontSize: 15 }}>
+					{i18n.t('guessesLeft')} {guessesLeft()}
+				</Text>
+				<View style={styles.textContainer}>
+					{!checkGameLost() && !checkGameWon() ? (
+						<Text style={{ fontSize: 20 }}>{i18n.t('guessTheCity')}</Text>
+					) : (
+						<Text style={{ fontSize: 20 }}>{i18n.t('correctCity')}</Text>
+					)}
 				</View>
 				<View style={styles.textContainer}>
-					<Text style={{ marginBottom: 10, fontSize: 15 }}>
-						{i18n.t('guessesLeft')} {this.guessesLeft()}
+					<Text style={{ fontSize: 30 }}>
+						{/* Solution if the game is lost, correct guesses if not. */}
+						{checkGameLost() ? showSolution() : showProgress()}
 					</Text>
-					<View style={styles.textContainer}>
-						{!gameLost && !gameWon ? (
-							<Text style={{ fontSize: 20 }}>{i18n.t('guessTheCity')}</Text>
-						) : (
-							<Text style={{ fontSize: 20 }}>{i18n.t('correctCity')}</Text>
-						)}
-					</View>
-					<View style={styles.textContainer}>
-						<Text style={{ fontSize: 30 }}>
-							{/* Solution if it the game is lost, correct guesses if not. */}
-							{gameLost ? this.showSolution() : this.showProgress()}
-						</Text>
-					</View>
-				</View>
-				<View style={styles.container}>
-					{/* Renders the clickable keyboard */}
-					<View style={styles.keyboard}>{buttons}</View>
 				</View>
 			</View>
-		);
-	}
-}
+			<View style={styles.container}>
+				{/* Renders the clickable keyboard */}
+				<View style={styles.keyboard}>{renderGameButtons()}</View>
+			</View>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	fitImage: {
@@ -218,6 +209,7 @@ const styles = StyleSheet.create({
 		marginRight: 5,
 	},
 });
+export default HangManGame;
 /* The SVG file I created here looks really good, but I couldn't figure out how to edit it based on the state of the game.
 Instead, I just made PNG files for the different game states.
 /*
