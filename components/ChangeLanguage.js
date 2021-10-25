@@ -19,7 +19,7 @@ const ChangeLanguage = () => {
 						{
 							/* 
               Starts the LOCALE_SETTINGS activity and resolves the promise when the user returns to the app.
-              Obviously only works for Android 
+              Obviously only works for Android.
               */
 						}
 						IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCALE_SETTINGS);
