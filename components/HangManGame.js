@@ -16,6 +16,7 @@ import GameLost from '../assets/gamePictures/GameLost.png';
 const HangManGame = () => {
 	/* Props are immutable */
 	defaultProps = {
+		/* A list of images representing the different stages of the game */
 		gamePictures: [GameStart, Rope, Head, Body, LeftArm, RightArm, LeftLeg, GameLost],
 		/* Number of gamePictures minus 1 */
 		strikes: 7,
