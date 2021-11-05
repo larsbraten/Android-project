@@ -85,7 +85,6 @@ const HangManGame = () => {
 	};
 	/* Used for displaying correct guesses */
 	const showProgress = () => {
-		console.log(solution);
 		return (
 			solution
 				/* Splits the string letter by letter */
@@ -211,33 +210,3 @@ const styles = StyleSheet.create({
 	},
 });
 export default HangManGame;
-/* The SVG file I created here looks really good, but I couldn't figure out how to edit it based on the state of the game.
-Instead, I just made PNG files for the different game states.
-/*
-let HangedMan = () => {
-  return (
-    <Svg
-      width={200}
-      height={250}
-      viewBox="0 0 200 250"
-      fill="none"
-      stroke="black"
-      fillRule="evenodd"
-      strokeLinecap="round"
-      strokeLineJoin="round"
-      strokeWidth="5.5"
-    >
-      <Line x1="60" y1="20" x2="140" y2="20" />
-      <Line x1="140" y1="20" x2="140" y2="50" />
-      <Line x1="60" y1="20" x2="60" y2="230" />
-      <Line x1="20" y1="230" x2="100" y2="230" />
-      <Circle cx="140" cy="70" r="20" />
-      <Line x1="140" y1="90" x2="140" y2="150" />
-      <Line x1="140" y1="120" x2="120" y2="100" />
-      <Line x1="140" y1="120" x2="160" y2="100" />
-      <Line x1="140" y1="150" x2="120" y2="180" />
-      <Line x1="140" y1="150" x2="160" y2="180" />
-    </Svg> 
-  );
-};
-*/
