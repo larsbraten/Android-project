@@ -19,7 +19,7 @@ const DrawerNavigator = () => {
 	);
 };
 
-export default function Header() {
+export default function NavigationDrawer() {
 	return (
 		<NavigationContainer>
 			<DrawerNavigator />

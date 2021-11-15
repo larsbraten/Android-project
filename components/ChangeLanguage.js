@@ -1,7 +1,7 @@
 import i18n from 'i18n-js';
 import 'react-native-gesture-handler';
 import React from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import Languages from '../assets/languages.png';
 import { Button } from 'react-native';
 import * as IntentLauncher from 'expo-intent-launcher';

@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import Header from './components/Header';
+import NavigationDrawer from './components/NavigationDrawer';
 import i18n from 'i18n-js';
 import nb from './shared/strings/No';
 import en from './shared/strings/En';
@@ -13,5 +13,5 @@ i18n.translations = {
 i18n.locale = Localization.locale;
 
 export default function App() {
-	return <Header />;
+	return <NavigationDrawer />;
 }

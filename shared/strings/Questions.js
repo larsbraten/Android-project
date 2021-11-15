@@ -4,7 +4,7 @@ i18n.locale = Localization.locale;
 
 let norwegian = i18n.locale == 'nb-NO';
 let english = i18n.locale == 'en-GB';
-/* Will default to this list if the language is en-GB or something or neither en-GB or nb-NO */
+/* Will default to this list if the language is en-GB or neither en-GB or nb-NO */
 internationalCity = [
 	'OSLO',
 	'LONDON',
@@ -29,7 +29,6 @@ internationalCity = [
 ];
 
 /* Will default to this list if the language is nb-NO */
-
 norwegianCity = [
 	'OSLO',
 	'KONGSVINGER',
